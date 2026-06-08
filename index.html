@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EcoTrack AI helps you estimate your carbon footprint and discover practical ways to reduce it.">
+  <title>EcoTrack AI | Carbon Footprint Awareness</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#calculator" aria-label="EcoTrack AI home">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <span>EcoTrack AI</span>
+      </a>
+      <a class="nav-link" href="#recommendations">Recommendations</a>
+    </nav>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Carbon Footprint Awareness Platform</p>
+      <h1 id="hero-title">Estimate your everyday carbon impact.</h1>
+      <p class="hero-copy">
+        Enter a few daily habits to see your carbon score, emission estimate,
+        impact level, and practical steps for a greener routine.
+      </p>
+    </section>
+  </header>
+
+  <main class="container">
+    <section class="calculator-panel" id="calculator" aria-labelledby="calculator-title">
+      <div class="section-heading">
+        <p class="eyebrow">Calculator</p>
+        <h2 id="calculator-title">Your lifestyle inputs</h2>
+      </div>
+
+      <form id="footprint-form" novalidate>
+        <div class="field-grid">
+          <label class="field" for="travel">
+            <span>Daily travel distance</span>
+            <small>Average kilometers per day</small>
+            <input type="number" id="travel" name="travel" min="0" max="500" step="0.1" placeholder="e.g. 12">
+          </label>
+
+          <label class="field" for="electricity">
+            <span>Monthly electricity usage</span>
+            <small>Electricity consumed in kWh</small>
+            <input type="number" id="electricity" name="electricity" min="0" max="5000" step="1" placeholder="e.g. 180">
+          </label>
+
+          <label class="field" for="diet">
+            <span>Diet type</span>
+            <small>Used for a simplified food impact estimate</small>
+            <select id="diet" name="diet">
+              <option value="1">Vegetarian</option>
+              <option value="2" selected>Mixed</option>
+              <option value="3">Non-vegetarian</option>
+            </select>
+          </label>
+
+          <label class="field" for="transport">
+            <span>Main travel mode</span>
+            <small>Adjusts the travel emission factor</small>
+            <select id="transport" name="transport">
+              <option value="0.03">Walk / cycle</option>
+              <option value="0.08">Public transport</option>
+              <option value="0.14" selected>Car or two-wheeler</option>
+              <option value="0.21">High fuel vehicle</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="error-message" id="error-message" role="alert"></p>
+
+        <div class="actions">
+          <button class="button primary" type="submit">Calculate footprint</button>
+          <button class="button secondary" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="results-panel" aria-labelledby="results-title">
+      <div class="section-heading">
+        <p class="eyebrow">Results</p>
+        <h2 id="results-title">Your impact snapshot</h2>
+      </div>
+
+      <div class="score-card" aria-live="polite">
+        <p id="status" class="status">Waiting for inputs</p>
+        <p id="score" class="score">Carbon Score: --</p>
+        <p id="estimate" class="estimate">Estimated monthly emissions will appear here.</p>
+      </div>
+
+      <div class="progress" aria-label="Carbon score meter">
+        <div id="bar"></div>
+      </div>
+
+      <div class="breakdown" aria-label="Emission category breakdown">
+        <div>
+          <span>Travel</span>
+          <strong id="travel-output">-- kg</strong>
+        </div>
+        <div>
+          <span>Electricity</span>
+          <strong id="electricity-output">-- kg</strong>
+        </div>
+        <div>
+          <span>Food</span>
+          <strong id="diet-output">-- kg</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="recommendations-panel" id="recommendations" aria-labelledby="recommendations-title">
+      <div class="section-heading">
+        <p class="eyebrow">Next Steps</p>
+        <h2 id="recommendations-title">Recommendations</h2>
+      </div>
+      <ul id="tips" class="tips">
+        <li>Calculate your score to receive personalized recommendations.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
