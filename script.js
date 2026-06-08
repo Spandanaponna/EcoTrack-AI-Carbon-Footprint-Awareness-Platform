@@ -128,17 +128,42 @@ function renderResults(result) {
   statusElement.textContent = result.level.label;
   progressBar.style.width = `${result.score}%`;
 
+  localStorage.setItem(
+    "lastCarbonScore",
+    JSON.stringify({
+      score: result.score,
+      emissions: Math.round(result.totalKg),
+      timestamp: new Date().toISOString()
+    })
+  );
+
   outputs.travel.textContent = `${Math.round(result.travelKg)} kg`;
   outputs.electricity.textContent = `${Math.round(result.electricityKg)} kg`;
   outputs.diet.textContent = `${Math.round(result.dietKg)} kg`;
 
   tipsElement.innerHTML = "";
+  const history =
+  JSON.parse(localStorage.getItem("history")) || [];
+
+history.push({
+  score: result.score,
+  emissions: Math.round(result.totalKg)
+});
+if (history.length > 10) {
+  history.shift();
+}
+
+localStorage.setItem(
+  "history",
+  JSON.stringify(history)
+);
 
   recommendations[result.level.key].forEach((tip) => {
     const item = document.createElement("li");
     item.textContent = tip;
     tipsElement.appendChild(item);
   });
+  loadHistory();
 }
 
 function resetResults() {
@@ -152,3 +177,40 @@ function resetResults() {
   outputs.diet.textContent = "-- kg";
   tipsElement.innerHTML = "<li>Calculate your score to receive personalized recommendations.</li>";
 }
+const previousScore = JSON.parse(
+  localStorage.getItem("lastCarbonScore")
+);
+
+if (previousScore) {
+  console.log("Previous Calculation:", previousScore);
+}
+function loadHistory() {
+  const historyList = document.getElementById("history-list");
+
+  if (!historyList) return;
+
+  const history =
+    JSON.parse(localStorage.getItem("history")) || [];
+
+  if (history.length === 0) {
+    historyList.innerHTML =
+      "<li>No previous calculations yet.</li>";
+    return;
+  }
+
+  historyList.innerHTML = "";
+
+  history.slice(-5).reverse().forEach(item => {
+    const li = document.createElement("li");
+    li.textContent =
+      `Score: ${item.score} | Emissions: ${item.emissions} kg CO₂e`;
+    historyList.appendChild(li);
+  });
+}
+loadHistory();
+document
+  .getElementById("clear-history")
+  .addEventListener("click", () => {
+    localStorage.removeItem("history");
+    loadHistory();
+  });
