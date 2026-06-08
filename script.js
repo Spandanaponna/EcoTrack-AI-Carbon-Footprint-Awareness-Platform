@@ -142,20 +142,9 @@ function renderResults(result) {
   outputs.diet.textContent = `${Math.round(result.dietKg)} kg`;
 
   tipsElement.innerHTML = "";
-  const history =
-  JSON.parse(localStorage.getItem("history")) || [];
-
-history.push({
-  score: result.score,
-  emissions: Math.round(result.totalKg)
-});
-if (history.length > 10) {
-  history.shift();
-}
-
-localStorage.setItem(
-  "history",
-  JSON.stringify(history)
+  saveHistory(
+  result.score,
+  Math.round(result.totalKg)
 );
 
   recommendations[result.level.key].forEach((tip) => {
@@ -214,3 +203,21 @@ document
     localStorage.removeItem("history");
     loadHistory();
   });
+function saveHistory(score, emissions) {
+  const history =
+    JSON.parse(localStorage.getItem("history")) || [];
+
+  history.push({
+    score,
+    emissions
+  });
+
+  if (history.length > 10) {
+    history.shift();
+  }
+
+  localStorage.setItem(
+    "history",
+    JSON.stringify(history)
+  );
+}
